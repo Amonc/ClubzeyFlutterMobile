@@ -22,7 +22,7 @@ class ClubData {
     return snapshot.map((event) {
       return event.docs.map((element) {
         Map<String, dynamic> data = element.data() as Map<String, dynamic>;
-        print(data['name']);
+
         return Club(data: data);
       }).toList();
     });

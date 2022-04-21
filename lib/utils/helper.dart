@@ -62,11 +62,11 @@ class Helper{
   Future<DateTime> getActualDateTime()async{
     bool internetWorking= await _tryConnection();
     if (internetWorking) {
-      print("online");
+
       return await NTP.now();
 
     }else{
-      print("offline");
+
       return DateTime.now();
     }
 

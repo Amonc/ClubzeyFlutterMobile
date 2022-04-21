@@ -41,7 +41,7 @@ class ClubDetails extends StatelessWidget {
           }
 
           Club club = snapshot.data!;
-          print(snapshot.data);
+
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,12 +146,12 @@ class ClubDetails extends StatelessWidget {
                   child: TimerLabel(
                     club: club,
                   )),
-              Expanded(
-                child: DrawOneMember(emails: club.getMembers),
-              ),
-              const SizedBox(
-                height: 100,
-              ),
+              // Expanded(
+              //   child: DrawOneMember(emails: club.getMembers),
+              // ),
+              // const SizedBox(
+              //   height: 100,
+              // ),
             ],
           );
         },
@@ -180,7 +180,7 @@ class _TimerLabelState extends State<TimerLabel> {
     // TODO: implement initState
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      print(_timer);
+
       setState(() {});
     });
   }
@@ -247,7 +247,7 @@ class _DrawOneMemberState extends State<DrawOneMember> {
       await Future.delayed(interval);
       yield i--;
       _email = widget.emails.randomItem();
-      print(_email);
+
       if (i == minCount) {
         return;
       }
@@ -288,7 +288,6 @@ class _DrawOneMemberState extends State<DrawOneMember> {
                       (child) {
                     if (child is Shape) {
                       final Shape shape = child;
-
 
                     }
                   },

@@ -3,11 +3,13 @@ import 'package:Clubzey/components/labels.dart';
 import 'package:Clubzey/models/club.dart';
 import 'package:Clubzey/utils/allColors.dart';
 import 'package:Clubzey/utils/encryption.dart';
+import 'package:Clubzey/utils/fontSize.dart';
 import 'package:Clubzey/utils/helper.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 class AddMemberPage extends StatelessWidget {
   final Club club;
@@ -84,8 +86,20 @@ class AddMemberPage extends StatelessWidget {
               StreamBuilder(
                 stream: timerCount(Duration(seconds: 1), 0),
                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                  return Label(
-                      text: (snapshot.data ?? "$_timerSeconds").toString());
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Label(
+                        text: ("Scan within "),
+                        fontSize: FontSize.h4,
+                      ),
+                      Label(
+                        text: (snapshot.data ?? "$_timerSeconds").toString(),
+                        fontSize: FontSize.h4,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ],
+                  );
                 },
               ),
 
@@ -94,7 +108,29 @@ class AddMemberPage extends StatelessWidget {
 //                String b=Encryption().decrypted(encrypted: Encrypted.fromBase16(a));
 // print("$a $b");
 //
-//               })
+//               }),
+
+              SizedBox(
+                height: 15,
+              ),
+
+              Label(
+                text: ('Or'),
+                fontWeight: FontWeight.w500,
+                fontSize: FontSize.p1,
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              FillButton(
+                title: 'Invite members',
+                onPressed: () {
+                  Share.share('check out my website https://example.com');
+                },
+                containerColor: AllColors.yellow,
+                textColor: AllColors.fontBlack,
+                fontWeight: FontWeight.w500,
+              ),
             ],
           ),
         ),
