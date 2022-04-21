@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "218595973435",
+    "project_id": "clubzey",
+    "storage_bucket": "clubzey.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:218595973435:android:c5b9cdaf8e5754219abf1e",
+        "android_client_info": {
+          "package_name": "aerobola.clubzey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "218595973435-8svcd90h5k4i2s91cjalotu895hpm2gb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfjii9eDRHzywVyvyJFoLS10MrcQBcH2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "218595973435-8svcd90h5k4i2s91cjalotu895hpm2gb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
