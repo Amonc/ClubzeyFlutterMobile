@@ -2,6 +2,7 @@
 
 import 'package:Clubzey/views/clubs_page.dart';
 import 'package:Clubzey/views/setting_page.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,16 @@ class _DashboardState extends State<Dashboard> {
 
   int _selectedIndex = 0;
 
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
+       print( dynamicLinkData.link.path);
+    }).onError((error) {
+      print(error.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

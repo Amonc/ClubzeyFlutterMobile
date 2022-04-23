@@ -1,14 +1,19 @@
+import 'package:Clubzey/components/custom_snackbar.dart';
 import 'package:Clubzey/utils/allColors.dart';
+import 'package:Clubzey/views/dashboard.dart';
 import 'package:Clubzey/views/qr_code_scanner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:uuid/uuid.dart';
 
 import '../backend/datastore/club_data.dart';
 import '../components/buttons.dart';
 import '../components/labels.dart';
+import '../components/pickers.dart';
 import '../components/textfield.dart';
 import '../models/club.dart';
 import '../utils/fontSize.dart';
@@ -32,10 +37,13 @@ class _CreateClubState extends State<CreateClub> {
 
   String _admin = FirebaseAuth.instance.currentUser!.email!;
 
+  int _selectedValue=0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -109,6 +117,7 @@ class _CreateClubState extends State<CreateClub> {
                       DatePicker.showDateTimePicker(context,
                           showTitleActions: true, onChanged: (date) {
                         print('change $date in time zone ' +
+
                             date.timeZoneOffset.inHours.toString());
                       }, onConfirm: (date) {
                         setState(() {
@@ -134,25 +143,75 @@ class _CreateClubState extends State<CreateClub> {
                     title: "Create",
                     fontWeight: FontWeight.bold,
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Club club = Club(data: {
-                          "name": _clubName,
-                          "perAmount": _perAmount,
-                          "drawDate": _drawDate,
-                          "members": [_admin],
-                          "createdAt": DateTime.now(),
-                          "createdBy": _admin,
+                      if(_formKey.currentState!.validate()){
 
-                        });
-                        var id = const Uuid().v4();
-                        club.setId = id;
-                        ClubData().createClub(club: club);
+                        if(_drawDate==null){
+                          CustomSnackbar(context: context, text: 'Please select a draw date').show();
+                        }
+                        else{
+                          showMaterialModalBottomSheet(
+                            context: context,
+                            builder: (context) => Container(
+                              height: 400,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 20,),
+                                  Label(
+                                    text: 'Select your shares',
+                                    fontSize: FontSize.h4,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  SizedBox(height: 20,),
+                                  Expanded(
+                                    child: SharePicker(initialValue: _selectedValue,onSelectedItemChange: (int value) {
+                                      setState(() {
+                                        _selectedValue = value;
+                                        print(_selectedValue);
+                                      });
+                                    },),
+                                  ),
+                                  SizedBox(
+                                    height: 50,
+                                  ),
+                                  CupertinoButton(
+                                      onPressed: () {
 
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClubsPage()));
+                                        Club club = Club(data: {
+                                          "name": _clubName,
+                                          "perAmount": _perAmount,
+                                          "drawDate": _drawDate,
+                                          "members": [_admin],
+                                          "createdAt": DateTime.now(),
+                                          "createdBy": _admin,
+
+                                        });
+                                        var id = const Uuid().v4();
+                                        club.setId = id;
+                                        ClubData().createClub(club: club);
+
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Dashboard()));
+                                      },
+                                      padding: EdgeInsets.all(0),
+                                      child: Label(
+                                        text: 'Continue',
+                                        fontSize: FontSize.h4,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  SizedBox(
+                                    height: 50,
+                                  ),
+
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+
                       }
+
                     }),
                 const SizedBox(height: 10,),
                 const Label(text: 'Or',fontSize: FontSize.p3,),

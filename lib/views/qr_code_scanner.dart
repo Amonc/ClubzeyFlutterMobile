@@ -81,7 +81,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
        controller.dispose();
        _loading= true;
        if(DateTime.now().difference(encryptedId.getDateTime).inSeconds<31&&DateTime.now().difference(encryptedId.getDateTime).inSeconds>0 ){
-     await ClubData().addMember(encryptedId: encryptedId);
+     await ClubData().addMember(encryptedId: encryptedId, share:encryptedId.share );
      Navigator.pop(context);
      Navigator.pop(context);
        }else{

@@ -44,10 +44,12 @@ class ClubData {
 
 
 
-  addMember({required EncryptedId encryptedId }) async {
+  addMember({required EncryptedId encryptedId , required int share}) async {
     String email= FirebaseAuth.instance.currentUser!.email!;
     await FirebaseFirestore.instance.collection('clubs').doc(encryptedId.getId).update({
-      "members":FieldValue.arrayUnion([email])
+      "members":FieldValue.arrayUnion([
+        {"email":email, "share":share}
+      ])
     });
   }
 

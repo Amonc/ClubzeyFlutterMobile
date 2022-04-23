@@ -50,6 +50,7 @@ dependencies:
   hive:
   hive_flutter:
   share_plus:
+  modal_bottom_sheet:
 
 
 

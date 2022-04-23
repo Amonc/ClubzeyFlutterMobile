@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:Clubzey/backend/auth/model/clubzey_user.dart';
 import 'package:Clubzey/backend/datastore/auth_data.dart';
 import 'package:Clubzey/backend/datastore/club_data.dart';
+import 'package:Clubzey/components/pickers.dart';
 import 'package:Clubzey/utils/allColors.dart';
 import 'package:Clubzey/utils/match_animation.dart';
 import 'package:Clubzey/views/add_member.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rive/rive.dart';
 
 import '../components/labels.dart';
@@ -15,11 +17,19 @@ import '../models/club.dart';
 import '../utils/fontSize.dart';
 import '../utils/helper.dart';
 
-class ClubDetails extends StatelessWidget {
+class ClubDetails extends StatefulWidget {
   final Club club;
   final String id;
-  const ClubDetails({Key? key, required this.club, required this.id})
+
+  ClubDetails({Key? key, required this.club, required this.id})
       : super(key: key);
+
+  @override
+  State<ClubDetails> createState() => _ClubDetailsState();
+}
+
+class _ClubDetailsState extends State<ClubDetails> {
+  int _selectedValue = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +40,7 @@ class ClubDetails extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: StreamBuilder(
-        stream: ClubData().getAClub(id: id),
+        stream: ClubData().getAClub(id: widget.id),
         builder: (BuildContext context, AsyncSnapshot<Club> snapshot) {
           if (snapshot.data == null) {
             return const Center(
@@ -74,12 +84,54 @@ class ClubDetails extends StatelessWidget {
                           color: Colors.deepPurple,
                           minSize: 0,
                           onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AddMemberPage(
-                                          club: club,
-                                        )));
+                            showMaterialModalBottomSheet(
+                              context: context,
+                              builder: (context) => Container(
+                                height: 400,
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 20,),
+                                    Label(
+                                      text: 'Select shares',
+                                      fontSize: FontSize.h4,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    SizedBox(height: 20,),
+                                    Expanded(
+                                      child: SharePicker(initialValue: _selectedValue,onSelectedItemChange: (int value) {
+                                        setState(() {
+                                          _selectedValue = value;
+                                          print(_selectedValue);
+                                        });
+                                      },),
+                                    ),
+                                    SizedBox(
+                                      height: 50,
+                                    ),
+                                    CupertinoButton(
+                                        onPressed: () {
+
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => AddMemberPage(
+                                                    club: club, shares: _selectedValue,
+                                                  )));
+                                        },
+                                        padding: EdgeInsets.all(0),
+                                        child: Label(
+                                          text: 'Continue',
+                                          fontSize: FontSize.h4,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    SizedBox(
+                                      height: 50,
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            );
                           },
                           child: const Label(
                             text: "+ add Member",
@@ -180,7 +232,6 @@ class _TimerLabelState extends State<TimerLabel> {
     // TODO: implement initState
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-
       setState(() {});
     });
   }
@@ -282,17 +333,19 @@ class _DrawOneMemberState extends State<DrawOneMember> {
           child: SizedBox(
               width: 100,
               height: 100,
-              child: RiveAnimation.asset('assets/images/square_loading.riv', controllers: [_controller], onInit: (Artboard artboard){
-
-                artboard.forEachComponent(
-                      (child) {
-                    if (child is Shape) {
-                      final Shape shape = child;
-
-                    }
-                  },
-                );
-              },)),
+              child: RiveAnimation.asset(
+                'assets/images/square_loading.riv',
+                controllers: [_controller],
+                onInit: (Artboard artboard) {
+                  artboard.forEachComponent(
+                    (child) {
+                      if (child is Shape) {
+                        final Shape shape = child;
+                      }
+                    },
+                  );
+                },
+              )),
         ),
         StreamBuilder(
           stream: timerCount(Duration(milliseconds: 50), 0),
@@ -360,3 +413,6 @@ class DrawWidget extends StatelessWidget {
     );
   }
 }
+
+
+

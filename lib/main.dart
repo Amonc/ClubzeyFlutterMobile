@@ -15,6 +15,9 @@ import 'components/labels.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  final PendingDynamicLinkData? initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
+  print(initialLink);
+
   runApp(Clubzey());
 }
 
@@ -31,6 +34,7 @@ class _ClubzeyState extends State<Clubzey> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    receiveDynamiclink();
 
   }
   // This widget is the root of your application.
@@ -52,6 +56,10 @@ class _ClubzeyState extends State<Clubzey> {
       ),
       home: SplashScreen(),
     );
+  }
+
+  void receiveDynamiclink() {
+
   }
 
 
