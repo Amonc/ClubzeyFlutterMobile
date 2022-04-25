@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:Clubzey/backend/datastore/club_data.dart';
+import 'package:Clubzey/backend/dio/club_data.dart';
 import 'package:Clubzey/components/custom_snackbar.dart';
 import 'package:Clubzey/components/labels.dart';
 import 'package:Clubzey/models/encrypted_id.dart';
@@ -81,7 +81,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
        controller.dispose();
        _loading= true;
        if(DateTime.now().difference(encryptedId.getDateTime).inSeconds<31&&DateTime.now().difference(encryptedId.getDateTime).inSeconds>0 ){
-     await ClubData().addMember(encryptedId: encryptedId, share:encryptedId.share );
+     await ClubData().addMemberFromQR(encryptedId: encryptedId );
      Navigator.pop(context);
      Navigator.pop(context);
        }else{

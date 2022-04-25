@@ -158,17 +158,17 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                 FillButton(
                     title: "Log In",
                     onPressed: () async {
-                      // if (_formKey.currentState!.validate()) {
-                      // HiveData().addEmail(email: _email);
-                      // await  UserAuth(context: context).emailAuth(email: _email);
-                      //
-                      //
-                      //
-                      // }
+                      if (_formKey.currentState!.validate()) {
+                      HiveData().addEmail(email: _email);
+                      await  UserAuth(context: context).emailAuth(email: _email);
 
-                  _email="shaanshan637@gmail.com";
-                        HiveData().addEmail(email: _email);
-                        await  UserAuth(context: context).emailAuth(email: "shaanshan637@gmail.com");
+
+
+                      }
+
+
+                        // HiveData().addEmail(email: _email);
+                        // await  UserAuth(context: context).emailAuth(email: _email);
 
 setState(() {
 

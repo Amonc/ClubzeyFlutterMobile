@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Clubzey/backend/datastore/club_data.dart';
+import 'package:Clubzey/backend/dio/club_data.dart';
 import 'package:Clubzey/utils/note_slider.dart';
 import 'package:Clubzey/views/club_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';

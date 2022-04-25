@@ -10,7 +10,7 @@ class EncryptedId{
     return DateTime.parse(code[1]);
   }
 
-int get share{
+int get getShares{
     return int.parse(code[2]);
   }
 

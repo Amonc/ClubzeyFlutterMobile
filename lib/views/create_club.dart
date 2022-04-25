@@ -10,7 +10,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:uuid/uuid.dart';
 
-import '../backend/datastore/club_data.dart';
+import '../backend/dio/club_data.dart';
 import '../components/buttons.dart';
 import '../components/labels.dart';
 import '../components/pickers.dart';
@@ -187,7 +187,7 @@ class _CreateClubState extends State<CreateClub> {
                                         });
                                         var id = const Uuid().v4();
                                         club.setId = id;
-                                        ClubData().createClub(club: club);
+                                        ClubData().createClub(club: club, shares: _selectedValue+1);
 
                                         Navigator.pushReplacement(
                                             context,

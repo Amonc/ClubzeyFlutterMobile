@@ -1,5 +1,6 @@
 
 
+import 'package:Clubzey/backend/dio/club_data.dart';
 import 'package:Clubzey/views/clubs_page.dart';
 import 'package:Clubzey/views/setting_page.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -30,7 +31,12 @@ class _DashboardState extends State<Dashboard> {
     // TODO: implement initState
     super.initState();
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
-       print( dynamicLinkData.link.path);
+  String dynamiclinkdata=dynamicLinkData.link.path.replaceAll('/', '');
+  print(dynamiclinkdata);
+  List<String> data=dynamiclinkdata.split("*");
+
+  ClubData().addMember(clubId: data[0], shares: int.parse(data[1]));
+
     }).onError((error) {
       print(error.toString());
     });
