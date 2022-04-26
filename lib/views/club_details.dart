@@ -9,6 +9,7 @@ import 'package:Clubzey/components/pickers.dart';
 import 'package:Clubzey/utils/allColors.dart';
 import 'package:Clubzey/utils/match_animation.dart';
 import 'package:Clubzey/views/add_member.dart';
+import 'package:Clubzey/views/payment_details_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -61,7 +62,7 @@ class _ClubDetailsState extends State<ClubDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,7 +185,7 @@ class _ClubDetailsState extends State<ClubDetails> {
 
                               ClubzeyUser user = clubzeyUserData.data!;
 
-                              return LetterAvatar(color: color, user: user);
+                              return LetterAvatar(color: color, letter: user.getUsername.substring(0,1), fontSize: FontSize.p1,);
                             },
                           );
                         },
@@ -220,13 +221,13 @@ class _ClubDetailsState extends State<ClubDetails> {
                     if (userPaymentSnap.data == null) {
                       return Container();
                     }
-                    UserPayment userPayment = userPaymentSnap.data!;
+                    UserPayment userPayment = userPaymentSnap.data??UserPayment(data: {});
 
                     return ListView.builder(
                       itemCount: userPayment.getPayments.length,
                       itemBuilder: (BuildContext context, int index) {
                         return MemberCard(
-                            paymentDetails: userPayment.getPayments[index]);
+                            paymentDetails: userPayment.getPayments[index], clubId: club.getId,);
                       },
                     );
                   },
@@ -242,81 +243,92 @@ class _ClubDetailsState extends State<ClubDetails> {
 
 class MemberCard extends StatelessWidget {
   final PaymentDetails paymentDetails;
+  final String clubId;
   const MemberCard({
     Key? key,
-    required this.paymentDetails,
+    required this.paymentDetails, required this.clubId,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 24),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        child: Column(
-          children: [
-            FutureBuilder(
-              future: AuthData(context: context)
-                  .getAUser(email: paymentDetails.getEmail), builder: (BuildContext context, AsyncSnapshot<ClubzeyUser> snapshot) {
+    return FutureBuilder(
+        future: AuthData(context: context)
+        .getAUser(email: paymentDetails.getEmail), builder: (BuildContext context, AsyncSnapshot<ClubzeyUser> snapshot) {
+      if (snapshot.data == null) {
+        return SizedBox();
+      }
+      ClubzeyUser clubzeyUser = snapshot.data!;
 
-                if(snapshot.data==null){
-                  return SizedBox();
-                }
-                ClubzeyUser clubzeyUser=snapshot.data!;
-                return Row(children: [
-                LetterAvatar(color: Colors.red, user: clubzeyUser),
-                Label(
-                  text: clubzeyUser.getUsername,
-                  fontSize: FontSize.p2,
-                  fontWeight: FontWeight.w500,
-                ),
 
-              ],);
-            },
-            ),
-            Row(
+      return CupertinoButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>
+              PaymentDetailsPage(paymentDetails: paymentDetails, clubzeyUser: clubzeyUser, clubId:   clubId ,)));
+        },
+        padding: EdgeInsets.all(0),
+        child: Card(
+          margin: EdgeInsets.symmetric(horizontal: 24),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            child: Column(
               children: [
-                Label(
-                  text: 'Paid: ',
-                  fontSize: FontSize.p2,
-                  fontWeight: FontWeight.w500,
-                ),
-                Expanded(
-                  child: Align(
-                      alignment: Alignment.topRight,
-                      child: Label(
-                        text: '${paymentDetails.getPaid}',
-                        fontSize: FontSize.p2,
-                        fontWeight: FontWeight.w500,
-                      )),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  color: AllColors.grey,
-                  width: 1,
-                  height: 20,
-                ),
-                Label(
-                  text: 'Due: ',
-                  fontSize: FontSize.p2,
-                  fontWeight: FontWeight.w500,
-                ),
-                Expanded(
-                  child: Align(
-                      alignment: Alignment.topRight,
-                      child: Label(
-                        text:
-                            '${paymentDetails.getTotalStock - paymentDetails.getPaid}',
-                        fontSize: FontSize.p2,
-                        fontWeight: FontWeight.w500,
-                      )),
+
+                Row(children: [
+                  LetterAvatar(color: Colors.red, letter: clubzeyUser.getUsername.substring(0,1)),
+                  Label(
+                    text: clubzeyUser.getUsername,
+                    fontSize: FontSize.p2,
+                    fontWeight: FontWeight.w500,
+                  ),
+
+                ],),
+
+                Row(
+                  children: [
+                    Label(
+                      text: 'Paid: ',
+                      fontSize: FontSize.p2,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    Expanded(
+                      child: Align(
+                          alignment: Alignment.topRight,
+                          child: Label(
+                            text: '${paymentDetails.getPaid}',
+                            fontSize: FontSize.p2,
+                            fontWeight: FontWeight.w500,
+                          )),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      color: AllColors.grey,
+                      width: 1,
+                      height: 20,
+                    ),
+                    Label(
+                      text: 'Due: ',
+                      fontSize: FontSize.p2,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    Expanded(
+                      child: Align(
+                          alignment: Alignment.topRight,
+                          child: Label(
+                            text:
+                            '${paymentDetails.getTotalStock -
+                                paymentDetails.getPaid}',
+                            fontSize: FontSize.p2,
+                            fontWeight: FontWeight.w500,
+                          )),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 

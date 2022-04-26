@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Clubzey/utils/fontSize.dart';
 import 'package:flutter/material.dart';
 
 import '../backend/auth/model/clubzey_user.dart';
@@ -9,22 +10,31 @@ class LetterAvatar extends StatelessWidget {
   const LetterAvatar({
     Key? key,
     required this.color,
-    required this.user,
+ this.fontSize, required this.letter,
   }) : super(key: key);
 
   final Color color;
-  final ClubzeyUser user;
+
+  final double? fontSize;
+  final String letter;
+
+
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
+
       backgroundColor: color.withOpacity(0.25),
-      child: Label(
-        text: user.getUsername
-            .substring(0, 1)
-            .toUpperCase(),
-        fontWeight: FontWeight.w900,
-        color: color,
+      child: FittedBox(
+
+        child: Label(
+
+          text: letter.toUpperCase(),
+          fontWeight: FontWeight.w900,
+          fontSize: fontSize??FontSize.p1,
+
+          color: color,
+        ),
       ),
     );
   }
