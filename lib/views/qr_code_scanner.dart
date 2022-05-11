@@ -72,8 +72,8 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
-      setState(() async {
+    controller.scannedDataStream.listen((scanData) async {
+
         result = scanData;
         if(result!=null){
        List<String> code=   Encryption().decrypted(encrypted: Encrypted.fromBase16(result!.code!)).split("*");
@@ -93,7 +93,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
         }
 
       });
-    });
+
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {

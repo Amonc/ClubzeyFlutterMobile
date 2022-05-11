@@ -23,10 +23,10 @@ import '../utils/fontSize.dart';
 import '../utils/helper.dart';
 
 class ClubDetails extends StatefulWidget {
-  final Club club;
-  final String id;
 
-  ClubDetails({Key? key, required this.club, required this.id})
+  final String clubId;
+
+  ClubDetails({Key? key,  required this.clubId})
       : super(key: key);
 
   @override
@@ -45,7 +45,7 @@ class _ClubDetailsState extends State<ClubDetails> {
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: StreamBuilder(
-        stream: ClubData().getAClub(id: widget.id),
+        stream: ClubData().getAClub(id: widget.clubId),
         builder: (BuildContext context, AsyncSnapshot<Club> snapshot) {
           if (snapshot.data == null) {
             return const Center(

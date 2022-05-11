@@ -50,7 +50,7 @@ class ClubsPage extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  ClubDetails(id: clubs[index].getId, club: clubs[index],)));
+                                  ClubDetails(clubId: clubs[index].getId,)));
                     },
                   ),
                   const SizedBox(

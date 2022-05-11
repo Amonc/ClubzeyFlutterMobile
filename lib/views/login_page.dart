@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
     subo.onData((data) async {
       print(data.link);
       if(data.link!=null){
-        var email=await HiveData().getEmail;
+        var email=await EmailHiveData().getEmail;
         await FirebaseAuth.instance.signInWithEmailLink(
             email: email, emailLink: data.link.toString());
        await  checkUserNameExists(email:email);
@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
  subo.onData((data) async {
    print(data.link);
     if(data.link!=null){
-        var email=await HiveData().getEmail;
+        var email=await EmailHiveData().getEmail;
       await FirebaseAuth.instance.signInWithEmailLink(
           email: email, emailLink: data.link.toString());
       await   checkUserNameExists(email:email);
@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                     title: "Log In",
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                      HiveData().addEmail(email: _email);
+                      EmailHiveData().addEmail(email: _email);
                       await  UserAuth(context: context).emailAuth(email: _email);
 
 

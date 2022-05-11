@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'components/labels.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -49,7 +50,7 @@ class _ClubzeyState extends State<Clubzey> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return OverlaySupport.global(child: MaterialApp(
       title: 'Clubzey',
       theme: ThemeData(
         // This is the theme of your application.
@@ -64,7 +65,7 @@ class _ClubzeyState extends State<Clubzey> {
         primarySwatch: Colors.blue,
       ),
       home: SplashScreen(),
-    );
+    ));
   }
 
 

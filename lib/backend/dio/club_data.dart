@@ -1,5 +1,6 @@
 import 'package:Clubzey/backend/api.dart';
 import 'package:Clubzey/backend/auth/model/clubzey_user.dart';
+import 'package:Clubzey/backend/hive_data.dart';
 import 'package:Clubzey/models/encrypted_id.dart';
 import 'package:Clubzey/models/user_payment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,17 +31,29 @@ class ClubData {
       return event.docs.map((element) {
         Map<String, dynamic> data = element.data() as Map<String, dynamic>;
         Club club=Club(data: data);
-        FirebaseMessaging.instance.subscribeToTopic(club.getId).then((value) {
-          print("success");
-        }).catchError((onError){
-          print(onError.toString());
-        });
+
 
         return club;
       }).toList();
     });
   }
 
+  Future<List<Club>> getAllClubsOnce({required String admin}) async{
+   var snapshot = await FirebaseFirestore.instance
+        .collection('clubs')
+        .where("members", arrayContains: admin)
+        .get();
+   return snapshot.docs.map((element) {
+
+     Map<String, dynamic> data = element.data() as Map<String, dynamic>;
+
+     Club club=Club(data: data);
+
+
+     return club;
+   }).toList();
+
+}
   Stream<Club> getAClub({required String id}) {
     Stream<DocumentSnapshot> snapshot =
         FirebaseFirestore.instance.collection('clubs').doc(id).snapshots();
