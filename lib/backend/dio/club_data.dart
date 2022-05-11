@@ -5,6 +5,7 @@ import 'package:Clubzey/models/user_payment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../models/club.dart';
 
@@ -28,8 +29,14 @@ class ClubData {
     return snapshot.map((event) {
       return event.docs.map((element) {
         Map<String, dynamic> data = element.data() as Map<String, dynamic>;
+        Club club=Club(data: data);
+        FirebaseMessaging.instance.subscribeToTopic(club.getId).then((value) {
+          print("success");
+        }).catchError((onError){
+          print(onError.toString());
+        });
 
-        return Club(data: data);
+        return club;
       }).toList();
     });
   }

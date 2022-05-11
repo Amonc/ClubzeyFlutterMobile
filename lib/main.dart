@@ -8,15 +8,24 @@ import 'package:Clubzey/views/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'components/labels.dart';
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
 
+  print("Handling a background message: ${message.messageId}");
+}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final PendingDynamicLinkData? initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
   print(initialLink);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
 
   runApp(Clubzey());
 }
@@ -34,7 +43,7 @@ class _ClubzeyState extends State<Clubzey> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    receiveDynamiclink();
+
 
   }
   // This widget is the root of your application.
@@ -58,9 +67,7 @@ class _ClubzeyState extends State<Clubzey> {
     );
   }
 
-  void receiveDynamiclink() {
 
-  }
 
 
 }

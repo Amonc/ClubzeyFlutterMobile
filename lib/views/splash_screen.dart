@@ -3,6 +3,7 @@ import 'package:Clubzey/utils/allColors.dart';
 import 'package:Clubzey/views/dashboard.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -47,6 +48,16 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _checkLoggedIn() async {
+    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    print('User granted permission: ${settings.authorizationStatus}');
     // _initDynamicLinks(context);
     var user = FirebaseAuth.instance.currentUser;
     await Future.delayed(Duration(seconds: 1));
