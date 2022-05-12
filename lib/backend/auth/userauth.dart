@@ -41,6 +41,11 @@ emailAuth({required String email}){
 
 }
 
+signIn({required String email}) async{
+  await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: "12345678");
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Dashboard()));
+}
+
 
 
 

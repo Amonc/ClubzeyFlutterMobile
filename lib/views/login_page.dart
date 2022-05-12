@@ -159,8 +159,8 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                     title: "Log In",
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                      EmailHiveData().addEmail(email: _email);
-                      await  UserAuth(context: context).emailAuth(email: _email);
+                      // EmailHiveData().addEmail(email: _email);
+                      await  UserAuth(context: context).signIn(email: _email);
 
 
 
