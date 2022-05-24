@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:Clubzey/backend/datastore/club_data.dart';
+import 'package:Clubzey/backend/dio/club_data.dart';
 import 'package:Clubzey/components/custom_snackbar.dart';
 import 'package:Clubzey/components/labels.dart';
 import 'package:Clubzey/models/encrypted_id.dart';
@@ -23,6 +23,8 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   bool _loading = false;
+
+
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -56,9 +58,14 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
+
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
+
+
+
       overlay: QrScannerOverlayShape(
+
           borderColor: Colors.lightGreenAccent,
           borderRadius: 5,
           borderLength: 40,
@@ -72,8 +79,8 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
-      setState(() async {
+    controller.scannedDataStream.listen((scanData) async {
+
         result = scanData;
         if(result!=null){
        List<String> code=   Encryption().decrypted(encrypted: Encrypted.fromBase16(result!.code!)).split("*");
@@ -81,7 +88,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
        controller.dispose();
        _loading= true;
        if(DateTime.now().difference(encryptedId.getDateTime).inSeconds<31&&DateTime.now().difference(encryptedId.getDateTime).inSeconds>0 ){
-     await ClubData().addMember(encryptedId: encryptedId);
+     await ClubData().addMemberFromQR(encryptedId: encryptedId );
      Navigator.pop(context);
      Navigator.pop(context);
        }else{
@@ -93,7 +100,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
         }
 
       });
-    });
+
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {

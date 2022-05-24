@@ -10,6 +10,13 @@ String? _id;
     d['id']=_id;
     return data;
   }
+ String get getId {
+   return _id??data['id'];
+ }
+
+ set setId(id) {
+   _id = id;
+ }
 
   String get getCreatedBy {
     return data['createdBy'];
@@ -39,11 +46,5 @@ String? _id;
     return (data['members']??[]).cast<String>();
   }
 
-  String get getId {
-    return _id??data['id'];
-  }
 
-  set setId(id) {
-    _id = id;
-  }
 }

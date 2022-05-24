@@ -21,7 +21,7 @@ class ClubzeyUser{
   }
 
   String get getUsername{
-    return data["username"];
+    return data["username"]??getEmail.substring(0,5);
   }
 
   DateTime get getCreatedAt{

@@ -3,8 +3,9 @@ import 'dart:io';
 
 import 'package:Clubzey/backend/hive_data.dart';
 import 'package:Clubzey/views/dashboard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,50 +28,27 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
+class _LoginPageState extends State<LoginPage>  {
   final _formKey = GlobalKey<FormState>();
 
   String _email = "";
-  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    WidgetsBinding.instance!.addObserver(this);
-    subo.onData((data) async {
-      print(data.link);
-      if(data.link!=null){
-        var email=await HiveData().getEmail;
-        await FirebaseAuth.instance.signInWithEmailLink(
-            email: email, emailLink: data.link.toString());
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Dashboard()));
-      }
-      subo.cancel();
-    });
-  }
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
 
 
- subo.onData((data) async {
-   print(data.link);
-    if(data.link!=null){
-        var email=await HiveData().getEmail;
-      await FirebaseAuth.instance.signInWithEmailLink(
-          email: email, emailLink: data.link.toString());
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Dashboard()));
-    }
-   subo.cancel();
- });
+
+
+
   }
 
 
-  StreamSubscription subo=FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) async {
 
 
 
-  });
 
 
 
@@ -149,19 +127,21 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                 FillButton(
                     title: "Log In",
                     onPressed: () async {
-                      // if (_formKey.currentState!.validate()) {
-                      // HiveData().addEmail(email: _email);
-                      // await  UserAuth(context: context).emailAuth(email: _email);
-                      //
-                      //
-                      //
-                      // }
+                      if (_formKey.currentState!.validate()) {
+                      // EmailHiveData().addEmail(email: _email);
+                      await  UserAuth(context: context).signIn(email: _email);
 
 
-                        HiveData().addEmail(email: "shaanshan637@gmail.com");
-                        await  UserAuth(context: context).emailAuth(email: "shaanshan637@gmail.com");
+
+                      }
 
 
+                        // HiveData().addEmail(email: _email);
+                        // await  UserAuth(context: context).emailAuth(email: _email);
+
+setState(() {
+
+});
 
 
                     }),
@@ -177,4 +157,23 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
       ),
     );
   }
+
+  Future<void> checkUserNameExists({ required String email}) async {
+   var snap=await FirebaseFirestore.instance.collection('userData').doc(email).get();
+
+   if(snap.data()==null){
+     var user=FirebaseAuth.instance.currentUser;
+  await   FirebaseFirestore.instance.collection('userData').doc(email).set({
+       "email":email,
+       "userId":user!.uid,
+       "createdAt":DateTime.now(),
+
+     });
+   }else{
+     print('found ${snap.data()}');
+   }
+    
+  }
+
+
 }

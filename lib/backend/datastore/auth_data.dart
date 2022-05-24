@@ -34,7 +34,7 @@ class AuthData {
 
     if (snapshot.data() != null) {
       Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-      print(data);
+
       return ClubzeyUser(data: data);
     }
     else{

@@ -3,6 +3,7 @@ import 'package:Clubzey/utils/allColors.dart';
 import 'package:Clubzey/utils/fontSize.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -50,9 +51,10 @@ class SettingPage extends StatelessWidget {
 
   }
   Future _logout(context) async {
-    await FirebaseAuth.instance.signOut().then((value) =>
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => LoginPage()),
-                (route) => false));
+    await FirebaseAuth.instance.signOut();
+    await FirebaseMessaging.instance.deleteToken();
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginPage()),
+            (route) => false);
   }
 }

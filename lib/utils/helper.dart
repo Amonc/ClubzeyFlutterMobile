@@ -62,11 +62,11 @@ class Helper{
   Future<DateTime> getActualDateTime()async{
     bool internetWorking= await _tryConnection();
     if (internetWorking) {
-      print("online");
+
       return await NTP.now();
 
     }else{
-      print("offline");
+
       return DateTime.now();
     }
 
@@ -84,6 +84,10 @@ class Helper{
 
     }
   }
+  getSixDigitCode(){
+
+    return "${Random(). nextInt(10)}${Random(). nextInt(10)}${Random(). nextInt(10)}${Random(). nextInt(10)}${Random(). nextInt(10)}${Random(). nextInt(10)}";
+  }
 } 
 
 extension Midnight on DateTime{
@@ -96,4 +100,7 @@ extension RandomListItem<T> on List<T> {
   T randomItem() {
     return this[Random().nextInt(length)];
   }
+
+
+
 }

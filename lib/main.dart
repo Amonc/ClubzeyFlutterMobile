@@ -7,14 +7,30 @@ import 'package:Clubzey/views/login_page.dart';
 import 'package:Clubzey/views/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'components/labels.dart';
+import 'firebase_options.dart';
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
 
+  print("Handling a background message: ${message.messageId}");
+}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // final PendingDynamicLinkData? initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
+  // print(initialLink);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+
   runApp(Clubzey());
 }
 
@@ -32,13 +48,15 @@ class _ClubzeyState extends State<Clubzey> {
     // TODO: implement initState
     super.initState();
 
+
   }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return OverlaySupport.global(child: MaterialApp(
+      title: 'Clubzey',
       theme: ThemeData(
+        useMaterial3: true,
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -51,8 +69,10 @@ class _ClubzeyState extends State<Clubzey> {
         primarySwatch: Colors.blue,
       ),
       home: SplashScreen(),
-    );
+    ));
   }
+
+
 
 
 }

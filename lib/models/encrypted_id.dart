@@ -9,4 +9,9 @@ class EncryptedId{
   DateTime get getDateTime{
     return DateTime.parse(code[1]);
   }
+
+int get getShares{
+    return int.parse(code[2]);
+  }
+
 }

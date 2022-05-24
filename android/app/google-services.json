@@ -29,6 +29,13 @@
             {
               "client_id": "218595973435-8svcd90h5k4i2s91cjalotu895hpm2gb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "218595973435-ja6shfmq4smhreg7th4sephv7fvp4914.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "aerobola.clubzey"
+              }
             }
           ]
         }

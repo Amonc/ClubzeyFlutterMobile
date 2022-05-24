@@ -1,14 +1,24 @@
+import 'dart:io';
+
+import 'package:Clubzey/components/custom_snackbar.dart';
+import 'package:Clubzey/models/invitation_code.dart';
 import 'package:Clubzey/utils/allColors.dart';
+import 'package:Clubzey/views/dashboard.dart';
+import 'package:Clubzey/views/create_invitation_code_page.dart';
+import 'package:Clubzey/views/join_with_code_page.dart';
 import 'package:Clubzey/views/qr_code_scanner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:uuid/uuid.dart';
 
-import '../backend/datastore/club_data.dart';
+import '../backend/dio/club_data.dart';
 import '../components/buttons.dart';
 import '../components/labels.dart';
+import '../components/pickers.dart';
 import '../components/textfield.dart';
 import '../models/club.dart';
 import '../utils/fontSize.dart';
@@ -16,6 +26,7 @@ import 'clubs_page.dart';
 
 class CreateClub extends StatefulWidget {
   const CreateClub({Key? key}) : super(key: key);
+
 
   @override
   State<CreateClub> createState() => _CreateClubState();
@@ -32,10 +43,15 @@ class _CreateClubState extends State<CreateClub> {
 
   String _admin = FirebaseAuth.instance.currentUser!.email!;
 
+  int _selectedValue = 0;
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -121,7 +137,8 @@ class _CreateClubState extends State<CreateClub> {
                           ? 'Select Draw Date'
                           : _drawDate.toString().substring(0, 10),
                       style: TextStyle(
-                          color: _drawDate == null ? Colors.blue : Colors.indigo,
+                          color:
+                              _drawDate == null ? Colors.blue : Colors.indigo,
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),
@@ -135,32 +152,121 @@ class _CreateClubState extends State<CreateClub> {
                     fontWeight: FontWeight.bold,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        Club club = Club(data: {
-                          "name": _clubName,
-                          "perAmount": _perAmount,
-                          "drawDate": _drawDate,
-                          "members": [_admin],
-                          "createdAt": DateTime.now(),
-                          "createdBy": _admin,
+                        if (_drawDate == null) {
+                          CustomSnackbar(
+                                  context: context,
+                                  text: 'Please select a draw date')
+                              .show();
+                        } else {
+                          showMaterialModalBottomSheet(
+                            context: context,
+                            builder: (context) => Container(
+                              height: 400,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Label(
+                                    text: 'Select your shares',
+                                    fontSize: FontSize.h4,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Expanded(
+                                    child: SharePicker(
+                                      initialValue: _selectedValue,
+                                      onSelectedItemChange: (int value) {
+                                        setState(() {
+                                          _selectedValue = value;
+                                          print(_selectedValue);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 50,
+                                  ),
+                                  CupertinoButton(
+                                      onPressed: () {
+                                        Club club = Club(data: {
+                                          "name": _clubName,
+                                          "perAmount": _perAmount,
+                                          "drawDate": _drawDate,
+                                          "members": [_admin],
+                                          "createdAt": DateTime.now(),
+                                          "createdBy": _admin,
+                                        });
+                                        var id = const Uuid().v4();
+                                        club.setId = id;
+                                        ClubData().createClub(
+                                            club: club,
+                                            shares: _selectedValue + 1);
 
-                        });
-                        var id = const Uuid().v4();
-                        club.setId = id;
-                        ClubData().createClub(club: club);
-
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClubsPage()));
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Dashboard()));
+                                      },
+                                      padding: EdgeInsets.all(0),
+                                      child: Label(
+                                        text: 'Continue',
+                                        fontSize: FontSize.h4,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  SizedBox(
+                                    height: 50,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
                       }
                     }),
-                const SizedBox(height: 10,),
-                const Label(text: 'Or',fontSize: FontSize.p3,),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Label(
+                  text: 'Or',
+                  fontSize: FontSize.p3,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+               if(Platform.isAndroid && Platform.isIOS ) FillButton(
+                  title: "Join using scanner",
+                  containerColor: AllColors.fontBlack,
+                  onPressed: () {
 
-                FillButton(title: "Join Club", containerColor: AllColors.fontBlack,onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> QrCodeScanner()));
-                },)
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Platform.isAndroid && Platform.isIOS
+                                    ? QrCodeScanner()
+                                    : JoinWithCodePage()
+                                       ));
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                FillButton(
+                  title: "Join using invitation code",
+                  containerColor: AllColors.fontBlack,
+                  onPressed: () {
+
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>JoinWithCodePage()));
+
+
+
+                  },
+                ),
               ],
             ),
           ),
