@@ -7,7 +7,7 @@ import 'package:Clubzey/views/clubs_page.dart';
 import 'package:Clubzey/views/setting_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -55,15 +55,7 @@ class _DashboardState extends State<Dashboard> {
     TopicSubscription().calculateSubscription();
     initMessaging();
 
-    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
-      String dynamiclinkdata = dynamicLinkData.link.path.replaceAll('/', '');
-      print(dynamiclinkdata);
-      List<String> data = dynamiclinkdata.split("*");
 
-      ClubData().addMember(clubId: data[0], shares: int.parse(data[1]));
-    }).onError((error) {
-      print(error.toString());
-    });
     
 
   }

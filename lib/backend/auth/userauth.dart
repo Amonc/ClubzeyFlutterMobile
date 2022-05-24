@@ -2,7 +2,7 @@ import 'package:Clubzey/backend/auth/model/clubzey_user.dart';
 import 'package:Clubzey/views/clubs_page.dart';
 import 'package:Clubzey/views/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

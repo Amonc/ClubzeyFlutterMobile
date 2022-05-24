@@ -8,7 +8,7 @@ import 'package:Clubzey/utils/fontSize.dart';
 import 'package:Clubzey/utils/helper.dart';
 import 'package:Clubzey/views/create_invitation_code_page.dart';
 import 'package:encrypt/encrypt.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -155,16 +155,5 @@ class AddMemberPage extends StatelessWidget {
     );
   }
 
-  Future<ShortDynamicLink> createShortDynamiclink(
-      {required String clubId, required int shares}) async {
-    final dynamicLinkParams = DynamicLinkParameters(
-      link: Uri.parse("https://clubzey.web.app/${clubId}*${shares}"),
-      uriPrefix: "https://clubzeyapp.page.link",
-      androidParameters:
-          const AndroidParameters(packageName: "aerobola.clubzey"),
-      iosParameters: const IOSParameters(bundleId: "aerobola.clubzey"),
-    );
-    return await FirebaseDynamicLinks.instance
-        .buildShortLink(dynamicLinkParams);
-  }
+
 }
