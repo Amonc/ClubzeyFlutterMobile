@@ -48,6 +48,7 @@ dependencies:
   connectivity_plus: ^2.2.1
   flutter_slidable:
   rive: ^0.8.4
+  pinput:
 
   hive:
   hive_flutter:

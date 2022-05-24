@@ -84,6 +84,10 @@ class Helper{
 
     }
   }
+  getSixDigitCode(){
+
+    return "${Random(). nextInt(10)}${Random(). nextInt(10)}${Random(). nextInt(10)}${Random(). nextInt(10)}${Random(). nextInt(10)}${Random(). nextInt(10)}";
+  }
 } 
 
 extension Midnight on DateTime{
@@ -96,4 +100,7 @@ extension RandomListItem<T> on List<T> {
   T randomItem() {
     return this[Random().nextInt(length)];
   }
+
+
+
 }

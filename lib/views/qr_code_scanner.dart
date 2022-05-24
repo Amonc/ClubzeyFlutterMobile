@@ -24,6 +24,8 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   bool _loading = false;
 
+
+
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
@@ -56,9 +58,14 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
+
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
+
+
+
       overlay: QrScannerOverlayShape(
+
           borderColor: Colors.lightGreenAccent,
           borderRadius: 5,
           borderLength: 40,

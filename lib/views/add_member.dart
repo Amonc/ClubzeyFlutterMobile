@@ -1,3 +1,4 @@
+import 'package:Clubzey/backend/dio/send_invitation_code_data.dart';
 import 'package:Clubzey/components/buttons.dart';
 import 'package:Clubzey/components/labels.dart';
 import 'package:Clubzey/models/club.dart';
@@ -5,6 +6,7 @@ import 'package:Clubzey/utils/allColors.dart';
 import 'package:Clubzey/utils/encryption.dart';
 import 'package:Clubzey/utils/fontSize.dart';
 import 'package:Clubzey/utils/helper.dart';
+import 'package:Clubzey/views/create_invitation_code_page.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,7 +74,8 @@ class AddMemberPage extends StatelessWidget {
                   print(_qrCreated.toString());
                   return QrImage(
                     data: Encryption()
-                        .encrypted(code: '${club.getId}*${_qrCreated}*${shares}')
+                        .encrypted(
+                            code: '${club.getId}*${_qrCreated}*${shares}')
                         .base16,
                     version: QrVersions.auto,
                     size: 320,
@@ -125,11 +128,21 @@ class AddMemberPage extends StatelessWidget {
                 height: 15,
               ),
               FillButton(
-                title: 'Invite members',
+                title: 'Create invitation code',
                 onPressed: () async {
-            ShortDynamicLink shorDynamiclink=     await createShortDynamiclink(clubId: club.getId,shares: shares);
 
-                  Share.share('To get started with ${club.getName} please use this link: ${shorDynamiclink.shortUrl}');
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateInvitationPage(club: club, shares: shares,)));
+
+                  // InvitationCodeData().createInvitationCode(club: club);
+
+
+
+
+
+
+                  // ShortDynamicLink shorDynamiclink=     await createShortDynamiclink(clubId: club.getId,shares: shares);
+                  //       Share.share('To get started with ${club.getName} please use this link: ${shorDynamiclink.shortUrl}');
                 },
                 containerColor: AllColors.yellow,
                 textColor: AllColors.fontBlack,
@@ -142,13 +155,16 @@ class AddMemberPage extends StatelessWidget {
     );
   }
 
-  Future<ShortDynamicLink> createShortDynamiclink({required String clubId, required int shares}) async {
+  Future<ShortDynamicLink> createShortDynamiclink(
+      {required String clubId, required int shares}) async {
     final dynamicLinkParams = DynamicLinkParameters(
       link: Uri.parse("https://clubzey.web.app/${clubId}*${shares}"),
       uriPrefix: "https://clubzeyapp.page.link",
-      androidParameters: const AndroidParameters(packageName: "aerobola.clubzey"),
+      androidParameters:
+          const AndroidParameters(packageName: "aerobola.clubzey"),
       iosParameters: const IOSParameters(bundleId: "aerobola.clubzey"),
     );
-    return await FirebaseDynamicLinks.instance.buildShortLink(dynamicLinkParams);
+    return await FirebaseDynamicLinks.instance
+        .buildShortLink(dynamicLinkParams);
   }
 }
