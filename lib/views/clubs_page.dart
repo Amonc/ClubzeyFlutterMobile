@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Clubzey/backend/dio/club_data.dart';
 import 'package:Clubzey/utils/note_slider.dart';
 import 'package:Clubzey/views/club_details.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +24,10 @@ class ClubsPage extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: false,
         centerTitle: false,
-        title: const Padding(
+        title:  Padding(
           padding: EdgeInsets.only(left: 16),
           child: Label(
-            text: "Clubs",
+            text: "clubs".tr(),
             fontWeight: FontWeight.bold,
             fontSize: FontSize.h4,
           ),

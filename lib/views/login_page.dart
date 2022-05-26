@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:Clubzey/backend/hive_data.dart';
 import 'package:Clubzey/views/dashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
@@ -72,8 +73,8 @@ class _LoginPageState extends State<LoginPage>  {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Label(
-                  text: "Log In",
+                 Label(
+                  text: "logIn".tr(),
                   fontSize: FontSize.h1,
                   fontWeight: FontWeight.w600,
                 ),

@@ -5,6 +5,7 @@ import 'package:Clubzey/views/dashboard.dart';
 import 'package:Clubzey/views/login_page.dart';
 
 import 'package:Clubzey/views/splash_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -23,6 +24,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -31,7 +34,12 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
 
-  runApp(Clubzey());
+  runApp(EasyLocalization(
+    startLocale: Locale('bn', 'BD'),
+      supportedLocales: [Locale('bn', 'BD'),Locale('en') ],
+      path: 'assets/translations',
+      fallbackLocale: Locale('bn', 'BD'),
+      child: Clubzey()));
 }
 
 class Clubzey extends StatefulWidget {
@@ -54,6 +62,9 @@ class _ClubzeyState extends State<Clubzey> {
   @override
   Widget build(BuildContext context) {
     return OverlaySupport.global(child: MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       title: 'Clubzey',
       theme: ThemeData(
         useMaterial3: true,

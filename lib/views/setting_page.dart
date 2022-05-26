@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:Clubzey/components/labels.dart';
 import 'package:Clubzey/utils/allColors.dart';
 import 'package:Clubzey/utils/fontSize.dart';
@@ -40,7 +42,7 @@ class SettingPage extends StatelessWidget {
               },
               color: Colors.teal.withOpacity(0.7),
               alignment: Alignment.center,
-              child: const Label(
+              child:  Label(
                 text: "Log out",
                 color: Colors.white,
                 fontSize: FontSize.p1,
