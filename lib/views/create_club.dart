@@ -237,7 +237,7 @@ class _CreateClubState extends State<CreateClub> {
                 const SizedBox(
                   height: 10,
                 ),
-               if(Platform.isAndroid && Platform.isIOS ) FillButton(
+               if(Platform.isAndroid || Platform.isIOS ) FillButton(
                   title: "Join using scanner",
                   containerColor: AllColors.fontBlack,
                   onPressed: () {
