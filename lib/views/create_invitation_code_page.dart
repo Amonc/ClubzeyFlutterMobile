@@ -84,7 +84,7 @@ class _CreateInvitationPageState extends State<CreateInvitationPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        snapshot.data == 0
+                        timerSnapshot.data == 0
                             ? FillButton(
                                 width: 130,
                                 height: 40,
