@@ -36,8 +36,9 @@ class FillButton extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: containerColor??Colors.blue, width: 2),
-                color: (containerColor ?? Colors.blue).withOpacity(0.7)),
+                border: Border.all(color: containerColor??AllColors.liteBlue, width: 2),
+                color: (containerColor ?? AllColors.liteBlue)
+            ),
             height: height ?? 45,
             child: Label(
               text: title,

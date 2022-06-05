@@ -1,7 +1,7 @@
 class FontSize{
 
   static const double eh1=52;
-  static const double eh2=50;
+  static const double eh2=44;
 
   static const double h1=34;
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Label extends StatelessWidget {
   final String text;
@@ -30,7 +31,7 @@ class Label extends StatelessWidget {
             maxLines: this.maxLine ?? 50,
             overflow: overflow ?? TextOverflow.visible,
             textAlign: align ?? TextAlign.left,
-            style: TextStyle(
+            style: GoogleFonts.lato(
                 fontSize: this.fontSize ?? 14,
                 fontWeight: this.fontWeight ?? FontWeight.normal,
                 color: this.color ?? Colors.black)));
