@@ -1,5 +1,5 @@
 import 'package:Clubzey/backend/auth/model/clubzey_user.dart';
-import 'package:Clubzey/views/clubs_page.dart';
+import 'package:Clubzey/views/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class AuthData {
     });
 
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => ClubsPage()));
+        context, MaterialPageRoute(builder: (context) => HomePage()));
   }
 
   Future<ClubzeyUser> getAUser({required String email}) async {

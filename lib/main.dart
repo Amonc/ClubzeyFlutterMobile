@@ -1,7 +1,9 @@
 import 'package:Clubzey/backend/hive_data.dart';
 import 'package:Clubzey/utils/allColors.dart';
+import 'package:Clubzey/utils/custom_painter.dart';
 import 'package:Clubzey/utils/fontSize.dart';
 import 'package:Clubzey/views/dashboard.dart';
+import 'package:Clubzey/views/homepage.dart';
 import 'package:Clubzey/views/login_page.dart';
 
 import 'package:Clubzey/views/splash_screen.dart';
