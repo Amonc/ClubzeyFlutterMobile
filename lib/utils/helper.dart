@@ -59,6 +59,21 @@ class Helper{
     return "${hours<10?"0$hours":hours}:${minutes<10?"0$minutes":minutes}:${seconds<10?"0$seconds":seconds}";
   }
 
+
+
+  Future<String> formatDuration2({required DateTime dateTime}) async {
+    DateTime now= await getActualDateTime();
+    if(dateTime.isBefore(now)){
+      return "Draw ended";
+    }
+
+   int hours= dateTime.difference(now).inHours;
+   int minutes= dateTime.difference(now.add(Duration(hours: hours))).inMinutes;
+   int seconds = dateTime.difference(now.add(Duration(minutes: hours*60+minutes))).inSeconds;
+
+    return "${hours<10?"0$hours":hours/24}";
+  }
+
   Future<DateTime> getActualDateTime()async{
     bool internetWorking= await _tryConnection();
     if (internetWorking) {

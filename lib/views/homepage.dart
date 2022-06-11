@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:Clubzey/backend/dio/club_data.dart';
-import 'package:Clubzey/utils/note_slider.dart';
+import 'package:Clubzey/utils/helper.dart';
 import 'package:Clubzey/views/club_details.dart';
 import 'package:Clubzey/views/create_club.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -71,9 +71,8 @@ class HomePage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(child: SizedBox()),
               CupertinoButton(
-                padding: EdgeInsets.all(0),
+                padding: EdgeInsets.only(left: 9),
                 minSize: 0,
                 onPressed: () {
                   Navigator.push(context,
@@ -114,7 +113,7 @@ class HomePage extends StatelessWidget {
               ),
               Expanded(child: SizedBox()),
               CupertinoButton(
-                padding: EdgeInsets.all(0),
+                padding: EdgeInsets.only(right: 9),
                 minSize: 0,
                 onPressed: () {},
                 child: Stack(
@@ -148,7 +147,6 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              Expanded(child: SizedBox()),
             ],
           ),
           SizedBox(
@@ -182,27 +180,16 @@ class HomePage extends StatelessWidget {
                 return ListView.builder(
                   itemCount: clubs.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        ClubItemCard(
-                          club: clubs[index],
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ClubDetails(
-                                          clubId: clubs[index].getId,
-                                        )));
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Divider(
-                          thickness: 1.5,
-                          color: Colors.black.withOpacity(0.1),
-                        ),
-                      ],
+                    return ClubItemCard(
+                      club: clubs[index],
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ClubDetails(
+                                      clubId: clubs[index].getId,
+                                    )));
+                      },
                     );
                   },
                 );
@@ -252,77 +239,136 @@ class _ClubItemCardState extends State<ClubItemCard> {
   Widget build(BuildContext context) {
     String drawIn = "";
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-                color: AllColors.liteBlack,
-                offset: Offset(2, 2),
+                color: AllColors.liteBlack.withOpacity(0.4),
+                offset: Offset(0, 0),
                 spreadRadius: 2,
                 blurRadius: 12,
-            blurStyle: BlurStyle.outer),
+                blurStyle: BlurStyle.outer),
           ]),
       child: CupertinoButton(
+        padding: EdgeInsets.all(0),
+        minSize: 0,
         onPressed: widget.onPressed,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Stack(
-            children: [
-              Positioned(
-                  top: 0,
-                  right: -5,
-                  child: Image.asset(
-                    "assets/images/ic_club_image.png",
-                    scale: 3.5,
-                  )),
-              Column(
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(CupertinoIcons.arrow_right),
+                  Icon(
+                    CupertinoIcons.arrow_right,
+                    shadows: [
+                      BoxShadow(
+                          offset: Offset(0, 0),
+                          color: Colors.blue,
+                          spreadRadius: 1,
+                          blurRadius: 4)
+                    ],
+                  ),
                   SizedBox(
                     height: 10,
                   ),
                   Label(
                     text: widget.club.getName,
-                    fontSize: FontSize.h5,
+                    fontSize: FontSize.h4,
                     fontWeight: FontWeight.w500,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Label(
-                    text: "Member: ${widget.club.getMembers.length}",
-                    fontSize: FontSize.p2,
-                    fontWeight: FontWeight.w500,
+                    text: "Share price: ${widget.club.getPerAmount}",
+                    fontSize: FontSize.p3,
+                    fontWeight: FontWeight.w300,
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 30,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Label(
-                        text: "Amount: ${widget.club.getPerAmount.toString()}",
-                        fontSize: FontSize.p2,
-                        fontWeight: FontWeight.w500,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Label(
+                            text: "Prize money:",
+                            fontSize: FontSize.p4,
+                            color: AllColors.liteGrey,
+                          ),
+                          Label(
+                            text:
+                                "${widget.club.getPerAmount * widget.club.getMembers.length}",
+                            fontSize: FontSize.p2,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.blue,
+                          ),
+                        ],
                       ),
-                      Label(
-                        text: "Draw in: $drawIn",
-                        color:
-                            drawIn == "Draw ended" ? Colors.red : Colors.black,
-                        fontSize: FontSize.p3,
-                        fontWeight: FontWeight.w500,
+                      Expanded(child: SizedBox()),
+                      Row(
+                        children: [
+                          DateTimeCard(
+                            dateTime:
+                                '${widget.club.getCreatedAt.toString().substring(0,11)}',
+                            title: 'Day',
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+            Positioned(
+                top: 0,
+                right: 0,
+                child: Image.asset(
+                  "assets/images/ic_club_image.png",
+                  scale: 3.5,
+                )),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class DateTimeCard extends StatelessWidget {
+  final String dateTime, title;
+
+  const DateTimeCard({Key? key, required this.dateTime, required this.title})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Label(
+          text: dateTime,
+          color: AllColors.grey,
+          fontSize: FontSize.p2,
+          fontWeight: FontWeight.w900,
+          align: TextAlign.center,
+        ),
+        Label(
+          text: title,
+          color: AllColors.grey,
+          fontSize: 7,
+          fontWeight: FontWeight.w500,
+          align: TextAlign.center,
+        ),
+      ],
     );
   }
 }
