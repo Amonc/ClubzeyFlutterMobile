@@ -3,7 +3,7 @@ import 'package:Clubzey/backend/dio/send_invitation_code_data.dart';
 import 'package:Clubzey/backend/hive_data.dart';
 import 'package:Clubzey/utils/fontSize.dart';
 import 'package:Clubzey/views/club_details.dart';
-import 'package:Clubzey/views/clubs_page.dart';
+import 'package:Clubzey/views/homepage.dart';
 import 'package:Clubzey/views/setting_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,7 +30,7 @@ class _DashboardState extends State<Dashboard> {
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
 
   List<Widget> _pages = [
-    ClubsPage(),
+    HomePage(),
     SettingPage(),
   ];
   onDidReceiveLocalNotification(

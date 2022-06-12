@@ -22,7 +22,7 @@ import '../components/textfield.dart';
 import '../utils/allColors.dart';
 import '../utils/fontSize.dart';
 import '../utils/helper.dart';
-import 'clubs_page.dart';
+import 'homepage.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);

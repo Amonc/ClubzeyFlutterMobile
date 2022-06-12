@@ -22,7 +22,7 @@ import '../components/pickers.dart';
 import '../components/textfield.dart';
 import '../models/club.dart';
 import '../utils/fontSize.dart';
-import 'clubs_page.dart';
+import 'homepage.dart';
 
 class CreateClub extends StatefulWidget {
   const CreateClub({Key? key}) : super(key: key);
