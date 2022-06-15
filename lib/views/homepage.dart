@@ -6,6 +6,7 @@ import 'package:Clubzey/backend/dio/club_data.dart';
 import 'package:Clubzey/utils/helper.dart';
 import 'package:Clubzey/views/club_details.dart';
 import 'package:Clubzey/views/create_club.dart';
+import 'package:Clubzey/views/setting_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,9 @@ class HomePage extends StatelessWidget {
           CupertinoButton(
             padding: EdgeInsets.only(right: 20),
             minSize: 0,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingPage()));
+            },
             child: CircleAvatar(
                 backgroundColor: AllColors.liteWhite,
                 child: Icon(
@@ -66,11 +69,13 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
+          SizedBox(height: 30,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Expanded(child: SizedBox()),
               CupertinoButton(
                 padding: EdgeInsets.only(left: 9),
                 minSize: 0,
@@ -115,7 +120,9 @@ class HomePage extends StatelessWidget {
               CupertinoButton(
                 padding: EdgeInsets.only(right: 9),
                 minSize: 0,
-                onPressed: () {},
+                onPressed: () {
+
+                },
                 child: Stack(
                   children: [
                     SvgPicture.asset("assets/images/ic_grey_container.svg"),
@@ -147,6 +154,8 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
+              Expanded(child: SizedBox()),
+
             ],
           ),
           SizedBox(
