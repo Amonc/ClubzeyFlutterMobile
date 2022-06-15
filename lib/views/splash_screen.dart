@@ -1,6 +1,7 @@
 
 import 'package:Clubzey/utils/allColors.dart';
 import 'package:Clubzey/views/dashboard.dart';
+import 'package:Clubzey/views/homepage.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -64,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (user != null) {
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => Dashboard()),
+          MaterialPageRoute(builder: (context) => HomePage()),
               (route) => false);
     } else {
       Navigator.pushAndRemoveUntil(
